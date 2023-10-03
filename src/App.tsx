@@ -6,6 +6,7 @@ import Tooltip from '@mui/material/Tooltip';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import './style.scss';
 
 type Rule = {
@@ -241,8 +242,8 @@ function convert(input: string): string {
 }
 
 export default function App() {
-  const [input, setInput] = useState('');
-  const [output, setOutput] = useState('');
+  const [input, setInput] = useState('We had a BBQ in <2 days ago>.');
+  const [output, setOutput] = useState('We had a BBQ in <t:1696086000:d>.');
   const copyToClipboard = async () => {
     await global.navigator.clipboard.writeText(output);
   };
@@ -263,6 +264,14 @@ export default function App() {
       <CssBaseline />
       <Box component="main" m={2}>
         <Box className="box">
+          <Typography variant="h1" gutterBottom>
+            Discord Timestamp Converter
+          </Typography>
+        </Box>
+        <Box className="box">
+          <Typography variant="h2" gutterBottom>
+            Output
+          </Typography>
           {output}
           <Tooltip title="Copy to Clipboard" placement="top" arrow>
             <IconButton
@@ -275,9 +284,12 @@ export default function App() {
           </Tooltip>
         </Box>
         <Box className="box">
+          <Typography variant="h2" gutterBottom>
+            Input
+          </Typography>
           <TextField
             fullWidth
-            label="メッセージを入力"
+            label="Message"
             multiline
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setInput(event.target.value);
