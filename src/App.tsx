@@ -8,6 +8,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import './style.scss';
+import rules from './rules.json';
 
 type Rule = {
   language: string;
@@ -17,88 +18,6 @@ type Rule = {
 
 const openBrakets = ['<', '〈', '＜'];
 const closeBrakets = ['>', '〉', '＞'];
-const rules: Rule[] = [
-  {
-    language: 'en',
-    pattern: '(?<days>\\d+) days ago(:|\\s)?(?<format>[tTdDfFR])?',
-    type: 'past',
-  },
-  {
-    language: 'en',
-    pattern: '(?<hours>\\d+) hours ago(:|\\s)?(?<format>[tTdDfFR])?',
-    type: 'past',
-  },
-  {
-    language: 'en',
-    pattern: '(?<minutes>\\d+) minutes ago(:|\\s)?(?<format>[tTdDfFR])?',
-    type: 'past',
-  },
-  {
-    language: 'en',
-    pattern: '(?<seconds>\\d+) seconds ago(:|\\s)?(?<format>[tTdDfFR])?',
-    type: 'past',
-  },
-  {
-    language: 'ja',
-    pattern: '(?<days>\\d+)日([:：]|\\s)?(?<format>[tTdDfFR])?',
-    type: 'abusolute',
-  },
-  {
-    language: 'ja',
-    pattern: '(?<years>\\d+)年後([:：]|\\s)?(?<format>[tTdDfFR])?',
-    type: 'future',
-  },
-  {
-    language: 'ja',
-    pattern: '(?<months>\\d+)[かカヵヶ]月後([:：]|\\s)?(?<format>[tTdDfFR])?',
-    type: 'future',
-  },
-  {
-    language: 'ja',
-    pattern: '(?<days>\\d+)日後([:：]|\\s)?(?<format>[tTdDfFR])?',
-    type: 'future',
-  },
-  {
-    language: 'ja',
-    pattern: '(?<hours>\\d+)時間後([:：]|\\s)?(?<format>[tTdDfFR])?',
-    type: 'future',
-  },
-  {
-    language: 'ja',
-    pattern: '(?<minutes>\\d+)分後([:：]|\\s)?(?<format>[tTdDfFR])?',
-    type: 'future',
-  },
-  {
-    language: 'ja',
-    pattern: '(?<seconds>\\d+)秒後([:：]|\\s)?(?<format>[tTdDfFR])?',
-    type: 'future',
-  },
-  {
-    language: 'ja',
-    pattern: '今([:：]|\\s)?(?<format>[tTdDfFR])?',
-    type: 'now',
-  },
-  {
-    language: 'ja',
-    pattern: '(?<days>\\d+)日前([:：]|\\s)?(?<format>[tTdDfFR])?',
-    type: 'past',
-  },
-  {
-    language: 'ja',
-    pattern: '(?<hours>\\d+)時間前([:：]|\\s)?(?<format>[tTdDfFR])?',
-    type: 'past',
-  },
-  {
-    language: 'ja',
-    pattern: '(?<minutes>\\d+)分前([:：]|\\s)?(?<format>[tTdDfFR])?',
-    type: 'past',
-  },
-  {
-    language: 'ja',
-    pattern: '(?<seconds>\\d+)秒前([:：]|\\s)?(?<format>[tTdDfFR])?',
-    type: 'past',
-  },
-];
 
 function toHenkaku(string: string): string {
   return string.replace(/[Ａ-Ｚａ-ｚ０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xfee0));
