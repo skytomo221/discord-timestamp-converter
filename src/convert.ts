@@ -1,4 +1,4 @@
-import rules from './rules.json';
+import * as rules from './rules.json';
 
 type Rule = {
   language: string;
