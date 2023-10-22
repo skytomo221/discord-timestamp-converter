@@ -146,5 +146,8 @@ function replace(text: string, rule: Rule) {
 }
 
 export default function convert(input: string): string {
-  return rules.reduce(replace, toHenkaku(input));
+  // FIXME: JSON ファイルを直接読み込むと、以下の警告が出てしまうため、一度配列に展開しています。
+  // export 'reduce' (imported as 'rules') was not found in './rules.json'
+  // (possible exports: 0, 1, 10, 11, 12, 13, 14, 15, 2, 3, 4, 5, 6, 7, 8, 9)
+  return [...rules].reduce(replace, toHenkaku(input));
 }
