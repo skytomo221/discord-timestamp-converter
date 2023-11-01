@@ -61,6 +61,16 @@
   },
   {
     "language": "ja",
+    "pattern": "(?<years>\\d+)年前([:：]|\\s)?(?<format>[tTdDfFR])?",
+    "type": "past"
+  },
+  {
+    "language": "ja",
+    "pattern": "(?<months>\\d+)[かカヵヶ]月前([:：]|\\s)?(?<format>[tTdDfFR])?",
+    "type": "past"
+  },
+  {
+    "language": "ja",
     "pattern": "(?<days>\\d+)日前([:：]|\\s)?(?<format>[tTdDfFR])?",
     "type": "past"
   },
