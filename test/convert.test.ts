@@ -43,6 +43,11 @@ describe("Japanese", () => {
     expect(convert('〈7年前〉')).toBe(`<t:${unixtime}:d>`);
   });
 
+  test('returns 2023-12-31 11:23:45', () => {
+    const unixtime = dayjs('2023-12-31T11:23:45').unix();
+    expect(convert('〈2023年12月31日11時23分45秒〉')).toBe(`<t:${unixtime}:d>`);
+  });
+
   test('returns 1 seconds later', () => {
     const unixtime = dayjs().add(1, 'second').unix();
     expect(convert('〈1秒後〉')).toBe(`<t:${unixtime}:d>`);

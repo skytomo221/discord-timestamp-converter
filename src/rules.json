@@ -61,6 +61,11 @@
   },
   {
     "language": "ja",
+    "pattern": "((?<years>\\d+)年)?((?<months>\\d+)月)?((?<days>\\d+)日の?)?((?<hours>\\d+)時)?((?<minutes>\\d+)分)?((?<seconds>\\d+)秒)?([:：]|\\s)?(?<format>[tTdDfFR])?",
+    "type": "abusolute"
+  },
+  {
+    "language": "ja",
     "pattern": "(?<years>\\d+)年前([:：]|\\s)?(?<format>[tTdDfFR])?",
     "type": "past"
   },

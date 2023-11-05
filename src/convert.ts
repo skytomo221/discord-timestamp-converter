@@ -50,21 +50,21 @@ function replace(text: string, rule: Rule) {
         if (years) {
           time = time
             .set('year', parseInt(years, 10) || 0)
-            .set('month', parseInt(months, 10) || 0)
-            .set('day', parseInt(days, 10) || 0)
+            .set('month', parseInt(months, 10) - 1 || 0)
+            .set('date', parseInt(days, 10) || 0)
             .set('hour', parseInt(hours, 10) || 0)
             .set('minute', parseInt(minutes, 10) || 0)
             .set('second', parseInt(seconds, 10) || 0);
         } else if (months) {
           time = time
-            .set('month', parseInt(months, 10) || 0)
-            .set('day', parseInt(days, 10) || 0)
+            .set('month', parseInt(months, 10) - 1 || 0)
+            .set('date', parseInt(days, 10) || 0)
             .set('hour', parseInt(hours, 10) || 0)
             .set('minute', parseInt(minutes, 10) || 0)
             .set('second', parseInt(seconds, 10) || 0);
         } else if (days) {
           time = time
-            .set('day', parseInt(days, 10) || 0)
+            .set('date', parseInt(days, 10) || 0)
             .set('hour', parseInt(hours, 10) || 0)
             .set('minute', parseInt(minutes, 10) || 0)
             .set('second', parseInt(seconds, 10) || 0);
