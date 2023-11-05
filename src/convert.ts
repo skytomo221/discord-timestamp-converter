@@ -1,3 +1,4 @@
+import * as dayjs from 'dayjs';
 import * as rules from './rules.json';
 
 type Rule = {
@@ -34,10 +35,10 @@ function replace(text: string, rule: Rule) {
       ),
     ),
   ].reduce((previousText, match) => {
-    const time = new Date();
+    let time = dayjs(new Date());
     const { groups } = match;
     if (!groups) {
-      const unixtime = Math.floor(time.getTime() / 1000);
+      const unixtime = Math.floor(time.unix());
       return previousText.replace(match[0], `<t:${unixtime}>`);
     }
     const format = normalizeDiscordUnixtimeFormat(groups.format) || '';
@@ -47,97 +48,112 @@ function replace(text: string, rule: Rule) {
     switch (type) {
       case 'abusolute':
         if (years) {
-          time.setFullYear(parseInt(years, 10) || 0);
-          time.setMonth(parseInt(months, 10) || 0);
-          time.setDate(parseInt(days, 10) || 0);
-          time.setHours(parseInt(hours, 10) || 0);
-          time.setMinutes(parseInt(minutes, 10) || 0);
-          time.setSeconds(parseInt(seconds, 10) || 0);
+          time = time
+            .set('year', parseInt(years, 10) || 0)
+            .set('month', parseInt(months, 10) - 1 || 0)
+            .set('date', parseInt(days, 10) || 0)
+            .set('hour', parseInt(hours, 10) || 0)
+            .set('minute', parseInt(minutes, 10) || 0)
+            .set('second', parseInt(seconds, 10) || 0);
         } else if (months) {
-          time.setMonth(parseInt(months, 10));
-          time.setDate(parseInt(days, 10) || 0);
-          time.setHours(parseInt(hours, 10) || 0);
-          time.setMinutes(parseInt(minutes, 10) || 0);
-          time.setSeconds(parseInt(seconds, 10) || 0);
+          time = time
+            .set('month', parseInt(months, 10) - 1 || 0)
+            .set('date', parseInt(days, 10) || 0)
+            .set('hour', parseInt(hours, 10) || 0)
+            .set('minute', parseInt(minutes, 10) || 0)
+            .set('second', parseInt(seconds, 10) || 0);
         } else if (days) {
-          time.setDate(parseInt(days, 10) || 0);
-          time.setHours(parseInt(hours, 10) || 0);
-          time.setMinutes(parseInt(minutes, 10) || 0);
-          time.setSeconds(parseInt(seconds, 10) || 0);
+          time = time
+            .set('date', parseInt(days, 10) || 0)
+            .set('hour', parseInt(hours, 10) || 0)
+            .set('minute', parseInt(minutes, 10) || 0)
+            .set('second', parseInt(seconds, 10) || 0);
         } else if (hours) {
-          time.setHours(parseInt(hours, 10) || 0);
-          time.setMinutes(parseInt(minutes, 10) || 0);
-          time.setSeconds(parseInt(seconds, 10) || 0);
+          time = time
+            .set('hour', parseInt(hours, 10) || 0)
+            .set('minute', parseInt(minutes, 10) || 0)
+            .set('second', parseInt(seconds, 10) || 0);
         } else if (minutes) {
-          time.setMinutes(parseInt(minutes, 10) || 0);
-          time.setSeconds(parseInt(seconds, 10) || 0);
+          time = time
+            .set('minute', parseInt(minutes, 10) || 0)
+            .set('second', parseInt(seconds, 10) || 0);
         } else if (seconds) {
-          time.setSeconds(parseInt(seconds, 10) || 0);
+          time = time.set('second', parseInt(seconds, 10) || 0);
         }
         break;
       case 'future':
         if (years) {
-          time.setFullYear(time.getFullYear() + parseInt(years, 10) || 0);
-          time.setMonth(time.getMonth() + parseInt(months, 10) || 0);
-          time.setDate(time.getDate() + parseInt(days, 10) || 0);
-          time.setHours(time.getHours() + parseInt(hours, 10) || 0);
-          time.setMinutes(time.getMinutes() + parseInt(minutes, 10) || 0);
-          time.setSeconds(time.getSeconds() + parseInt(seconds, 10) || 0);
+          time = time
+            .add(parseInt(years, 10) || 0, 'year')
+            .add(parseInt(months, 10) || 0, 'month')
+            .add(parseInt(days, 10) || 0, 'day')
+            .add(parseInt(hours, 10) || 0, 'hour')
+            .add(parseInt(minutes, 10) || 0, 'minute')
+            .add(parseInt(seconds, 10) || 0, 'second');
         } else if (months) {
-          time.setMonth(time.getMonth() + parseInt(months, 10));
-          time.setDate(time.getDate() + parseInt(days, 10) || 0);
-          time.setHours(time.getHours() + parseInt(hours, 10) || 0);
-          time.setMinutes(time.getMinutes() + parseInt(minutes, 10) || 0);
-          time.setSeconds(time.getSeconds() + parseInt(seconds, 10) || 0);
+          time = time
+            .add(parseInt(months, 10) || 0, 'month')
+            .add(parseInt(days, 10) || 0, 'day')
+            .add(parseInt(hours, 10) || 0, 'hour')
+            .add(parseInt(minutes, 10) || 0, 'minute')
+            .add(parseInt(seconds, 10) || 0, 'second');
         } else if (days) {
-          time.setDate(time.getDate() + parseInt(days, 10) || 0);
-          time.setHours(time.getHours() + parseInt(hours, 10) || 0);
-          time.setMinutes(time.getMinutes() + parseInt(minutes, 10) || 0);
-          time.setSeconds(time.getSeconds() + parseInt(seconds, 10) || 0);
+          time = time
+            .add(parseInt(days, 10) || 0, 'day')
+            .add(parseInt(hours, 10) || 0, 'hour')
+            .add(parseInt(minutes, 10) || 0, 'minute')
+            .add(parseInt(seconds, 10) || 0, 'second');
         } else if (hours) {
-          time.setHours(time.getHours() + parseInt(hours, 10) || 0);
-          time.setMinutes(time.getMinutes() + parseInt(minutes, 10) || 0);
-          time.setSeconds(time.getSeconds() + parseInt(seconds, 10) || 0);
+          time = time
+            .add(parseInt(hours, 10) || 0, 'hour')
+            .add(parseInt(minutes, 10) || 0, 'minute')
+            .add(parseInt(seconds, 10) || 0, 'second');
         } else if (minutes) {
-          time.setMinutes(time.getMinutes() + parseInt(minutes, 10) || 0);
-          time.setSeconds(time.getSeconds() + parseInt(seconds, 10) || 0);
+          time = time
+            .add(parseInt(minutes, 10) || 0, 'minute')
+            .add(parseInt(seconds, 10) || 0, 'second');
         } else if (seconds) {
-          time.setSeconds(time.getSeconds() + parseInt(seconds, 10) || 0);
+          time = time.add(parseInt(seconds, 10) || 0, 'second');
         }
         break;
       case 'past':
         if (years) {
-          time.setFullYear(time.getFullYear() - parseInt(years, 10) || 0);
-          time.setMonth(time.getMonth() - parseInt(months, 10) || 0);
-          time.setDate(time.getDate() - parseInt(days, 10) || 0);
-          time.setHours(time.getHours() - parseInt(hours, 10) || 0);
-          time.setMinutes(time.getMinutes() - parseInt(minutes, 10) || 0);
-          time.setSeconds(time.getSeconds() - parseInt(seconds, 10) || 0);
+          time = time
+            .subtract(parseInt(years, 10) || 0, 'year')
+            .subtract(parseInt(months, 10) || 0, 'month')
+            .subtract(parseInt(days, 10) || 0, 'day')
+            .subtract(parseInt(hours, 10) || 0, 'hour')
+            .subtract(parseInt(minutes, 10) || 0, 'minute')
+            .subtract(parseInt(seconds, 10) || 0, 'second');
         } else if (months) {
-          time.setMonth(time.getMonth() - parseInt(months, 10));
-          time.setDate(time.getDate() - parseInt(days, 10) || 0);
-          time.setHours(time.getHours() - parseInt(hours, 10) || 0);
-          time.setMinutes(time.getMinutes() - parseInt(minutes, 10) || 0);
-          time.setSeconds(time.getSeconds() - parseInt(seconds, 10) || 0);
+          time = time
+            .subtract(parseInt(months, 10) || 0, 'month')
+            .subtract(parseInt(days, 10) || 0, 'day')
+            .subtract(parseInt(hours, 10) || 0, 'hour')
+            .subtract(parseInt(minutes, 10) || 0, 'minute')
+            .subtract(parseInt(seconds, 10) || 0, 'second');
         } else if (days) {
-          time.setDate(time.getDate() - parseInt(days, 10) || 0);
-          time.setHours(time.getHours() - parseInt(hours, 10) || 0);
-          time.setMinutes(time.getMinutes() - parseInt(minutes, 10) || 0);
-          time.setSeconds(time.getSeconds() - parseInt(seconds, 10) || 0);
+          time = time
+            .subtract(parseInt(days, 10) || 0, 'day')
+            .subtract(parseInt(hours, 10) || 0, 'hour')
+            .subtract(parseInt(minutes, 10) || 0, 'minute')
+            .subtract(parseInt(seconds, 10) || 0, 'second');
         } else if (hours) {
-          time.setHours(time.getHours() - parseInt(hours, 10) || 0);
-          time.setMinutes(time.getMinutes() - parseInt(minutes, 10) || 0);
-          time.setSeconds(time.getSeconds() - parseInt(seconds, 10) || 0);
+          time = time
+            .subtract(parseInt(hours, 10) || 0, 'hour')
+            .subtract(parseInt(minutes, 10) || 0, 'minute')
+            .subtract(parseInt(seconds, 10) || 0, 'second');
         } else if (minutes) {
-          time.setMinutes(time.getMinutes() - parseInt(minutes, 10) || 0);
-          time.setSeconds(time.getSeconds() - parseInt(seconds, 10) || 0);
+          time = time
+            .subtract(parseInt(minutes, 10) || 0, 'minute')
+            .subtract(parseInt(seconds, 10) || 0, 'second');
         } else if (seconds) {
-          time.setSeconds(time.getSeconds() - parseInt(seconds, 10) || 0);
+          time = time.subtract(parseInt(seconds, 10) || 0, 'second');
         }
         break;
       default:
     }
-    const unixtime = Math.floor(time.getTime() / 1000);
+    const unixtime = Math.floor(time.unix());
     return previousText.replace(
       match[0],
       `<t:${[unixtime, format].join(':')}>`,
